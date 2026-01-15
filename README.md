@@ -1,2 +1,2 @@
 https://github.com/BraixenRUS/mesto-ad
-ну грузись на публик пж
+ну грузись на публик
