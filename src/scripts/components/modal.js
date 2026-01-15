@@ -1,29 +1,40 @@
-const handleEscUp = (evt) => {
+// Обработчик нажатия Esc
+const handleEscClose = (evt) => {
   if (evt.key === "Escape") {
-    const activePopup = document.querySelector(".popup_is-opened");
-    closeModalWindow(activePopup);
+    // Ищем открытый попап и закрываем его
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closeModalWindow(openedPopup);
+    }
   }
 };
 
-export const openModalWindow = (modalWindow) => {
-  modalWindow.classList.add("popup_is-opened");
-  document.addEventListener("keyup", handleEscUp);
+// Функция открытия попапа
+export const openModalWindow = (modalElement) => {
+  modalElement.classList.add("popup_is-opened");
+  // Вешаем слушатель Esc только когда попап открыт
+  document.addEventListener("keyup", handleEscClose);
 };
 
-export const closeModalWindow = (modalWindow) => {
-  modalWindow.classList.remove("popup_is-opened");
-  document.removeEventListener("keyup", handleEscUp);
+// Функция закрытия попапа
+export const closeModalWindow = (modalElement) => {
+  modalElement.classList.remove("popup_is-opened");
+  // Удаляем слушатель Esc, чтобы не висел в памяти
+  document.removeEventListener("keyup", handleEscClose);
 };
 
-export const setCloseModalWindowEventListeners = (modalWindow) => {
-  const closeButtonElement = modalWindow.querySelector(".popup__close")
-  closeButtonElement.addEventListener("click", () => {
-    closeModalWindow(modalWindow);
+// Вешает обработчики закрытия: на крестик и на оверлей (фон)
+export const setCloseModalWindowEventListeners = (modalElement) => {
+  const closeButton = modalElement.querySelector(".popup__close");
+
+  closeButton.addEventListener("click", () => {
+    closeModalWindow(modalElement);
   });
 
-  modalWindow.addEventListener("mousedown", (evt) => {
+  modalElement.addEventListener("mousedown", (evt) => {
+    // Проверяем, что клик был именно по оверлею, а не внутри формы
     if (evt.target.classList.contains("popup")) {
-      closeModalWindow(modalWindow);
+      closeModalWindow(modalElement);
     }
   });
-}
+};
