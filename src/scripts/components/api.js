@@ -1,4 +1,4 @@
-// Конфиг с адресом сервера и токеном (чтобы не писать их каждый раз)
+// Конфиг с адресом сервера и токеном
 const apiConfig = {
   baseUrl: "https://mesto.nomoreparties.co/v1/apf-cohort-202",
   headers: {
@@ -7,8 +7,7 @@ const apiConfig = {
   },
 };
 
-// Функция-помощник: проверяет ответ сервера.
-// Если ok (200-299), то возвращает JSON, иначе формирует ошибку.
+// Проверка ответа сервера
 const checkResponse = (res) => {
   if (res.ok) {
     return res.json();
@@ -16,67 +15,59 @@ const checkResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 };
 
-// Универсальная функция запроса.
-// Принимает хвост URL и параметры, добавляет заголовки и проверяет ответ.
-const request = (endpoint, options) => {
+// Универсальный запрос
+const request = (endpoint, options = {}) => {
   return fetch(`${apiConfig.baseUrl}${endpoint}`, {
     headers: apiConfig.headers,
     ...options,
   }).then(checkResponse);
 };
 
-// 1. Получение данных пользователя (имя, описание, аватар)
-export const fetchUserInfo = () => {
-  return request(`/users/me`);
+// ===== Экспорты под твой index.js =====
+
+// GET /users/me
+export const getUserInfo = () => {
+  return request("/users/me");
 };
 
-// 2. Получение списка карточек с сервера
-export const fetchCards = () => {
-  return request(`/cards`);
+// GET /cards
+export const getCardList = () => {
+  return request("/cards");
 };
 
-// 3. Редактирование профиля (отправляем новые имя и описание)
-export const updateUserData = (name, about) => {
-  return request(`/users/me`, {
+// PATCH /users/me
+export const setUserInfo = ({ name, about }) => {
+  return request("/users/me", {
     method: "PATCH",
-    body: JSON.stringify({
-      name,
-      about,
-    }),
+    body: JSON.stringify({ name, about }),
   });
 };
 
-// 4. Обновление аватарки
-export const updateUserAvatar = (avatarLink) => {
-  return request(`/users/me/avatar`, {
+// PATCH /users/me/avatar
+export const setUserAvatar = ({ avatar }) => {
+  return request("/users/me/avatar", {
     method: "PATCH",
-    body: JSON.stringify({
-      avatar: avatarLink,
-    }),
+    body: JSON.stringify({ avatar }),
   });
 };
 
-// 5. Добавление новой карточки
-export const createNewCard = (name, link) => {
-  return request(`/cards`, {
+// POST /cards
+export const setUserCards = ({ name, link }) => {
+  return request("/cards", {
     method: "POST",
-    body: JSON.stringify({
-      name,
-      link,
-    }),
+    body: JSON.stringify({ name, link }),
   });
 };
 
-// 6. Удаление карточки по её ID
-export const removeCard = (cardId) => {
+// DELETE /cards/:cardId
+export const deleteUserCards = (cardId) => {
   return request(`/cards/${cardId}`, {
     method: "DELETE",
   });
 };
 
-// 7. Постановка и снятие лайка
-// Если isLiked === true, значит лайк уже стоит и его надо убрать (DELETE)
-export const toggleCardLike = (cardId, isLiked) => {
+// PUT/DELETE /cards/likes/:cardId
+export const changeLikeCardStatus = (cardId, isLiked) => {
   return request(`/cards/likes/${cardId}`, {
     method: isLiked ? "DELETE" : "PUT",
   });
