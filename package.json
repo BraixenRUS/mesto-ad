@@ -1,26 +1,14 @@
 {
   "name": "mesto-ad",
-  "version": "1.0.0",
-  "description": "Стартовый набор для выполнения проектной работы Место",
-  "main": "index.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
-    "build": "vite build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lesha-well/mesto-ad.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Lesha-well/mesto-ad/issues"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^7.2.7"
-  },
-  "homepage": "https://github.com/Lesha-well/mesto-ad#readme"
+    "vite": "^7.2.4"
+  }
 }
